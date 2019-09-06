@@ -1,0 +1,68 @@
+<% include ../partials/header %>
+
+
+	<div class="row">
+		<div class = "col-md-3">
+			<p class = "lead">Yelp Camp</p>
+				<div class="list-group">
+					<li class = "list-group-item active">Info</li>
+					<li class = "list-group-item ">Info</li>
+					<li class = "list-group-item ">Info</li>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="img-thumbnail">
+				<img class="image-responsive" src="<%=campground.image %>">
+				<div class="caption-full">
+					<h4 class="float-sm-right">
+						$<%= campground.price %>/night
+					</h4>
+					<h4>
+						<%= campground.name %>
+					</h4>
+					<p>
+						<%= campground.description %>
+					</p>
+					<p>
+						<em>Submitted by: <%= campground.author.username %></em>
+					</p>
+					<% if(currentUser && campground.author.id.equals(currentUser._id)){ %>
+					<a class="btn btn-warning btn-sm" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
+					<form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+						<button class="btn btn-danger btn-sm">
+							Delete
+						</button>
+					</form>
+					<% } %>
+				</div>
+			</div>
+			<div class="card bg-light">
+			  <div class="card-body">
+				<div class="text-right">
+				<a class="btn btn-success" href ="/campgrounds/<%= campground._id %>/comments/new">Add New Comment</a>
+				</div>
+				<hr>
+				<%campground.comments.forEach(function(comment) { %>
+					<div class = "card-text">
+						
+						<strong><%= comment.author.username %></strong>
+						<span style="float: right; display: inline-block">10 Days Ago</span>
+							
+						<p>
+							<%= comment.text %>
+						</p>
+						<% if(currentUser && comment.author.id.equals(currentUser._id)){ %>
+						<a class="btn btn-warning btn-sm" href="/campgrounds/<%= campground._id 										%>/comments/<%= comment.id %>/edit">Edit</a>
+						<form  class = "delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= 							 comment.id %>?_method=DELETE" method="POST">
+						<input type="submit" class="btn btn-danger btn-sm" value="Delete">	
+						</form>
+						<% } %>
+					</div>
+				<% }); %>
+							
+			  </div>
+			</div>
+		</div>
+	</div>
+
+<% include ../partials/footer %>
